@@ -7,7 +7,6 @@ import { storeToRefs } from 'pinia'
 // stateとgetterを参照
 const weatherStore = useWeatherInfo()
 const loginStore = useLoginInfo()
-const { loginFlag } = storeToRefs(loginStore)
 
 const weatherInfo = computed(() => weatherStore.weatherInfo)
 const getIcon = computed(() => weatherStore.getIcon)
@@ -16,28 +15,17 @@ const getIcon = computed(() => weatherStore.getIcon)
 const searchArea = () => {
   weatherStore.searchArea()
 }
-
-// 画面情報削除処理
-const clearSerchInfo = () => {
-  weatherStore.clearSerchInfo()
-}
-
-const rules = {
-  required: (value) => !!value || 'Required.',
-  counter: (value) => value.length <= 20 || 'Max 20 characters',
-}
 </script>
 <template>
-  <v-app-bar class="mb-10" extended>
+  <v-app-bar extended>
     <img :src="getIcon" />
-    <v-app-bar-title><h2>気象情報</h2></v-app-bar-title>
+    <v-app-bar-title><h2 class="pa-2">気象情報</h2></v-app-bar-title>
 
     <v-text-field
+      class="mr-5"
       clearable
       v-model="weatherInfo.searchName"
-      :rules="[rules.required, rules.counter]"
       label="都道府県名を入力"
-      placeholder="都道府県名を入力…"
       variant="underlined"
       append-inner-icon="mdi-magnify"
       @click:append-inner="searchArea"
@@ -47,10 +35,6 @@ const rules = {
       <v-spacer></v-spacer>
       <h2>検索結果：{{ weatherInfo.searchInfo.targetArea }}</h2>
       <v-spacer></v-spacer>
-      <!-- <div>
-        <p v-if="loginFlag">ようこそ、ユーザーさん！</p>
-        <p v-else>ログインしてください。</p>
-      </div> -->
     </template>
   </v-app-bar>
 </template>
